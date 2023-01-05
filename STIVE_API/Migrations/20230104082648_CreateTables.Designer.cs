@@ -66,6 +66,7 @@ namespace STIVE_API.Migrations
                         .HasColumnType("double");
 
                     b.HasKey("IdArticle");
+                    
 
                     b.ToTable("articles");
                 });

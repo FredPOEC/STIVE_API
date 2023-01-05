@@ -60,10 +60,6 @@ namespace STIVE_API.Migrations
                     b.Property<double>("PrixVentehtArticle")
                         .HasColumnType("double");
 
-                    b.Property<int?>("QuantiteEnStock")
-                        .IsRequired()
-                        .HasColumnType("int");
-
                     b.Property<double?>("RistourneCartonArticle")
                         .HasColumnType("double");
 
