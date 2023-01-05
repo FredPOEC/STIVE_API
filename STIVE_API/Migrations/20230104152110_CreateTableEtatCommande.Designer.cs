@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using STIVE_API.Helpers;
 
@@ -10,9 +11,10 @@ using STIVE_API.Helpers;
 namespace STIVE_API.Migrations
 {
     [DbContext(typeof(STIVE_Context))]
-    partial class STIVE_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230104152110_CreateTableEtatCommande")]
+    partial class CreateTableEtatCommande
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

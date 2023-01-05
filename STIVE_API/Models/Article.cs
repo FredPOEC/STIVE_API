@@ -9,6 +9,9 @@ namespace STIVE_API.Models
         public int IdArticle { get; set; }
         [Required]
         public string NomArticle { get; set; }
+
+        [Required]
+        public int? QuantiteEnStock { get; set; }
       
         public string? DescriptifArticle { get; set; }
 

@@ -12,24 +12,24 @@ namespace STIVE_API.Controllers
 
     public class CalculController : Controller
     {
-  
-        public CalculController ()
+
+        public CalculController()
         {
-            
+
         }
 
-                                                                // ACTIONS SUR LES ARTICLES
+        // ACTIONS SUR LES ARTICLES
 
-        private double PrixparCarton(string PrixUnitaire, string Nombre, string Ristourne )
+        private double PrixparCarton(string PrixUnitaire, string Nombre, string Ristourne)
         {
             double prix;
-            prix = Math.Round(Convert.ToDouble(PrixUnitaire)*Convert.ToInt32(Nombre)*Convert.ToDouble(Ristourne),0)-0.01;
+            prix = Math.Round(Convert.ToDouble(PrixUnitaire) * Convert.ToInt32(Nombre) * Convert.ToDouble(Ristourne), 0) - 0.01;
             return prix;
         }
 
         //Renvoyer la liste des articles
         [HttpGet]
-        public List<Article> ListeArticle()
+        public List<Article> ListeArticles()
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -39,27 +39,66 @@ namespace STIVE_API.Controllers
                 }
             }
         }
-   
+
+        //Renvoyer un article suivant ID
+        [HttpGet]
+        public Article ArticleparID(int ID = 0)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                {
+                    return context.articles.Where(x => x.IdArticle == ID).First();
+                }
+            }
+        }
+
+        //Renvoyer liste article suivant domaine
+        [HttpGet]
+        public List<Article> ListeArticleparDomaine(int IDDomaine = 0)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                {
+                    List<Article> articles = context.articles.Where(x => x.IdDomaine == IDDomaine).ToList();
+                    return articles;
+                }
+            }
+        }
+
+        //Renvoyer liste article suivant famille
+        [HttpGet]
+        public List<Article> ListeArticleparFamille(int IDFamille = 0)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                {
+                    List<Article> articles = context.articles.Where(x => x.IdFamille == IDFamille).ToList();
+                    return articles;
+                }
+            }
+        }
+
         //Ajouter un article
         [HttpPost]
-        public void AjouterArticle(string nom, string annee, string prixVenteHT, string prixAchatHT, string IdFamille, 
-            string IdDomaine, string IdTva, string? ristourne = null, string? nbCarton = null,string ? descriptif=null, 
-            string? image=null)
+        public void AjouterArticle(string nom, string annee, string prixVenteHT, string prixAchatHT, string IdFamille,
+            string IdDomaine, string IdTva, string? stock = null, string? ristourne = null, string? nbCarton = null, string? descriptif = null,
+            string? image = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
                 Article NouvelArticle = new Article();
                 NouvelArticle.NomArticle = nom;
                 NouvelArticle.AnneeArticle = annee;
+                NouvelArticle.QuantiteEnStock = Convert.ToInt32(stock);
                 NouvelArticle.DescriptifArticle = descriptif;
                 NouvelArticle.ImageArticle = image;
                 NouvelArticle.PrixVentehtArticle = Convert.ToDouble(prixVenteHT);
                 NouvelArticle.NbDansCartonArticle = Convert.ToInt32(nbCarton);
                 NouvelArticle.RistourneCartonArticle = Convert.ToDouble(ristourne);
                 NouvelArticle.PrixVenteCartonhtArticle = PrixparCarton(prixVenteHT, nbCarton, ristourne);
-                NouvelArticle.PrixAchathtArticle = Convert.ToDouble(prixAchatHT);   
+                NouvelArticle.PrixAchathtArticle = Convert.ToDouble(prixAchatHT);
                 NouvelArticle.IdFamille = Convert.ToInt32(IdFamille);
-                NouvelArticle.IdDomaine= Convert.ToInt32(IdDomaine);
+                NouvelArticle.IdDomaine = Convert.ToInt32(IdDomaine);
                 NouvelArticle.IdTVA = Convert.ToInt32(IdTva);
 
                 context.Add(NouvelArticle);
@@ -69,7 +108,9 @@ namespace STIVE_API.Controllers
 
         //Modifier un article
         [HttpPut]
-        public void ModifierArticle(int ID = 0, string? nom=null, string? annee=null, string? prixVenteHT=null, string? nbCarton=null, string? ristourne=null, string? prixVenteCarton=null, string? prixAchatHT=null,  string? IdFamille=null, string? IdDomaine=null, string? IdTva=null, string? descriptif=null, string? image=null)
+        public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, string? prixVenteHT = null, string? nbCarton = null,
+            string? ristourne = null, string? prixVenteCarton = null, string? prixAchatHT = null, string? IdFamille = null, string? IdDomaine = null,
+            string? IdTva = null, string? stock = null, string? descriptif = null, string? image = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -77,21 +118,34 @@ namespace STIVE_API.Controllers
 
                 if (nom != null) { unArticle.NomArticle = nom; }
                 if (annee != null) { unArticle.AnneeArticle = annee; }
-                if (nbCarton !=null) { unArticle.NbDansCartonArticle = Convert.ToInt32(nbCarton); }
-                if (ristourne !=null) { unArticle.RistourneCartonArticle = Convert.ToDouble(ristourne); }
+                if (nbCarton != null) { unArticle.NbDansCartonArticle = Convert.ToInt32(nbCarton); }
+                if (ristourne != null) { unArticle.RistourneCartonArticle = Convert.ToDouble(ristourne); }
                 if (prixVenteHT != null) { unArticle.PrixVentehtArticle = Convert.ToDouble(prixVenteHT); unArticle.PrixVenteCartonhtArticle = PrixparCarton(prixVenteHT, nbCarton, ristourne); }
-                if (prixVenteCarton !=null) { unArticle.PrixVenteCartonhtArticle = Convert.ToDouble(prixVenteCarton); }
+                if (prixVenteCarton != null) { unArticle.PrixVenteCartonhtArticle = Convert.ToDouble(prixVenteCarton); }
                 if (prixAchatHT != null) { unArticle.PrixAchathtArticle = Convert.ToDouble(prixAchatHT); }
-                if (IdFamille !=null) { unArticle.IdFamille = Convert.ToInt32(IdFamille); }
+                if (IdFamille != null) { unArticle.IdFamille = Convert.ToInt32(IdFamille); }
                 if (IdDomaine != null) { unArticle.IdDomaine = Convert.ToInt32(IdDomaine); }
-                if (descriptif !=null) { unArticle.DescriptifArticle = descriptif; }
+                if (descriptif != null) { unArticle.DescriptifArticle = descriptif; }
                 if (image != null) { unArticle.ImageArticle = image; }
-                if (IdTva !=null) { unArticle.IdTVA= Convert.ToInt32(IdTva); }
+                if (IdTva != null) { unArticle.IdTVA = Convert.ToInt32(IdTva); }
+                if (stock != null) { unArticle.QuantiteEnStock = Convert.ToInt32(stock); };
 
                 context.Update(unArticle);
                 context.SaveChanges();
             }
         }
+
+        //Modifier quantité en stock
+        [HttpPut]
+        public void ModifierStockArticle(int ID = 0, string? stock = null)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                Article unArticle = context.articles.Where(x => x.IdArticle == ID).First();
+                if (stock !=null) { unArticle.QuantiteEnStock = Convert.ToInt32(stock); }       
+            }
+        }
+
 
         //Supprimer un article
         [HttpDelete]
@@ -107,7 +161,7 @@ namespace STIVE_API.Controllers
 
         // ACTIONS SUR LES UTILISATEURS
 
-        //Lister les utilisateurs
+        //Lister tous les utilisateurs
         [HttpGet]
         public List<Utilisateur> ListeUtilisateur ()
         {
@@ -116,6 +170,21 @@ namespace STIVE_API.Controllers
 
                 {
                     List<Utilisateur> utilisateurs = context.utilisateurs.ToList();
+                    return utilisateurs;
+                }
+
+            }
+        }
+
+        //Lister les utilisateurs par fonction
+        [HttpGet]
+        public List<Utilisateur> ListeUtilisateurparFonction(int IDFonction=0)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+
+                {
+                    List<Utilisateur> utilisateurs = context.utilisateurs.Where(x => x.IdFonction == IDFonction).ToList();
                     return utilisateurs;
                 }
 
@@ -425,5 +494,7 @@ namespace STIVE_API.Controllers
                 context.SaveChanges();
             }
         }
+
+        //ACTIONS SUR LES COMMANDES CLIENTS
     }
 }
