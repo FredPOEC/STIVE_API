@@ -19,11 +19,7 @@ namespace STIVE_API.Models
         [Required]
         public double PrixVentehtArticle { get; set; }
 
-        public double? RistourneCartonArticle { get; set; }
-        public int? NbDansCartonArticle { get; set; }
 
-
-        public double? PrixVenteCartonhtArticle { get; set; }
 
 
         [Required]
