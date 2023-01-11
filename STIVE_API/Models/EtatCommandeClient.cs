@@ -5,9 +5,10 @@ namespace STIVE_API.Models
     public class EtatCommandeClient
     {
         [Key]
-        public int IdEtatCommandeClient;
+        public int IdEtatCommandeClient { get; set; }
 
         [Required]
-        public string LibelleEtatCommandeClient;
+        public string LibelleEtatCommandeClient { get; set; }
     }
 }
+    
