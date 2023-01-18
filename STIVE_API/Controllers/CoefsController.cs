@@ -8,49 +8,49 @@ namespace STIVE_API.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class TvasController : ControllerBase
+    public class CoefsController : ControllerBase
     {
-        //ACTION SUR LA TVA
+        //ACTION SUR LES COEFS DE MARGE
 
-        //Lister les taux de TVA
+        //Lister les coefs de marge
         [HttpGet]
-        public List<Tva> ListeTVA()
+        public List<Coef> ListeCoef()
         {
             using STIVE_Context context = new STIVE_Context();
             {
 
                 {
-                    List<Tva> tvas = context.tvas.ToList();
-                    return tvas;
+                    List<Coef> coefs = context.coefs.ToList();
+                    return coefs;
                 }
 
             }
         }
 
-        //Ajouter un taux de TVA
+        //Ajouter un coef de marge
         [HttpPost]
-        public void AjouterTVA(double Taux)
+        public void AjouterCoef(double Coef, string? Libelle=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
-                Tva NouvelleTva = new Tva();
-                NouvelleTva.TauxTva = Taux;
-                NouvelleTva.LibelleTVA = Taux + "%";
+                Coef NouveauCoef = new Coef();
+                NouveauCoef.ValeurCoef = Coef;
+                NouveauCoef.LibelleCoef = Libelle;
 
-                context.Add(NouvelleTva);
+                context.Add(NouveauCoef);
                 context.SaveChanges();
             }
         }
 
 
-        //Supprimer une TVA
+        //Supprimer un coef de marge
         [HttpDelete]
-        public void SupprimerTva(int ID = 0)
+        public void SupprimerCoef(int ID = 0)
         {
             using STIVE_Context context = new STIVE_Context();
             {
-                Tva uneTva = context.tvas.Where(x => x.IdTva == ID).First();
-                context.Remove(uneTva);
+                Coef unCoef = context.coefs.Where(x => x.IdCoef == ID).First();
+                context.Remove(unCoef);
                 context.SaveChanges();
             }
         }

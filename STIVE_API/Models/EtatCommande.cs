@@ -9,6 +9,6 @@ namespace STIVE_API.Models
         public int IdEtatCommande { get; set; }
 
         [Required]
-        public string NomEtatCommande { get; set; }
+        public string? LibelleEtatCommande { get; set; }
     }
 }
