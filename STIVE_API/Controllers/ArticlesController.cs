@@ -46,8 +46,8 @@ namespace STIVE_API.Controllers
             using STIVE_Context context = new STIVE_Context();
             {
                 List<Article> Articles = context.articles
-                            .OrderBy(x => x.IdFamille)
-                            .ThenBy(x => x.IdDomaine)
+                           // .OrderBy(x => x.IdFamille)
+                           // .ThenBy(x => x.IdDomaine)
                             .ToList();
                 return Articles;
             }
