@@ -47,7 +47,7 @@ namespace STIVE_API.Controllers
 
         //Modifier un utilisateur
         [HttpPut]
-        public void ModifierUtilisateur(int ID = 0, string? nom = null, string? prenom = null, string? mail = null, string? adresse = null, string? codepostal = null, string? mdp=null, string? ville = null, string? telephone = null)
+        public void ModifierUtilisateur(int ID = 0, string? nom = null, string? prenom = null, string? mail = null, string? adresse = null, string? codepostal = null, string? mdp=null, string? ville = null, string? telephone = null, string? idfonction=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -61,6 +61,7 @@ namespace STIVE_API.Controllers
                 if (codepostal != null) { unUtilisateur.CodePostalUtilisateur = codepostal; }
                 if (ville != null) { unUtilisateur.VilleUtilisateur = ville; }
                 if (telephone != null) { unUtilisateur.TelephoneUtilisateur = telephone; }
+                if (idfonction != null) { unUtilisateur.IdFonction = idfonction; }
 
 
                 context.Update(unUtilisateur);
