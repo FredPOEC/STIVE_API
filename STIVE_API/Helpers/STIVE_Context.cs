@@ -26,7 +26,8 @@ namespace STIVE_API.Helpers
         public DbSet<CommandeDomaine> commandeDomaines { get; set; }
 
         public DbSet<LigneCommandeDomaine> ligneCommandeDomaines { get; set; }
-        public DbSet<EtatCommandeClient> etatCommandeClients { get; set; }
+        public DbSet<EtatCommande> etatCommandes { get; set; }
+        public DbSet<Coef> coefs { get; set; }
 
 
         public STIVE_Context() { }

@@ -12,7 +12,7 @@ namespace STIVE_API.Models
         [Required]
         public string DateCommandeDomaine { get; set; }
         [Required]
-        public string EtatCommandeDomaine { get; set; }
+        public int? IdEtatCommande { get; set; }
 
     }
 }

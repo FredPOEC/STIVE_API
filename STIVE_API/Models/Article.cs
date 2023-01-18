@@ -8,7 +8,7 @@ namespace STIVE_API.Models
         [Key]
         public int IdArticle { get; set; }
         [Required]
-        public string NomArticle { get; set; }
+        public string? NomArticle { get; set; }
         [Required]
         public int QuantiteEnStock { get; set; }
       
@@ -26,7 +26,10 @@ namespace STIVE_API.Models
         public double PrixAchathtArticle { get; set; }
 
         [Required]
-        public string AnneeArticle { get; set; }
+        public string? AnneeArticle { get; set; }
+
+        [Required, ForeignKey("coefs")]
+        public int IdCoef { get; set; }
 
         [Required, ForeignKey("familles")]
         public int IdFamille { get; set; }

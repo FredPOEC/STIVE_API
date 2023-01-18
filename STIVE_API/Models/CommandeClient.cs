@@ -8,14 +8,16 @@ namespace STIVE_API.Models
         [Key]
         public int IdCommandeClient { get; set; }
 
-        [Required, ForeignKey("clients")]
-        public int IdClient { get; set; }
-
         [Required]
         public string DateCommandeClient { get; set; }
 
-        [Required, ForeignKey("etatsCommandeClients")]
-        public int IdEtatCommandeClient { get; set; }
+        [Required, ForeignKey("clients")]
+        public int IdClient { get; set; }
+
+
+
+        [Required, ForeignKey("etatsCommande")]
+        public int? IdEtatCommande { get; set; }
 
     }
 }
