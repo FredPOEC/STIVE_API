@@ -25,11 +25,13 @@ namespace STIVE_API.Controllers
 
         //Ajouter un utilisateur
         [HttpPost]
-        public void AjouterUtilisateur(string nom, string prenom, string mail, string adresse, string codepostal, string ville, string idfonction, string? mdp = null, string? telephone = null)
+        public void AjouterUtilisateur( string nom, string prenom, string mail, string adresse, string codepostal, string ville,
+            int idfonction, string? mdp = null, string? telephone = null, string? numeroutilisateur=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
                 Utilisateur NouvelUtilisateur = new Utilisateur();
+                NouvelUtilisateur.NumeroUtilisateur = numeroutilisateur;
                 NouvelUtilisateur.NomUtilisateur = nom;
                 NouvelUtilisateur.PrenomUtilisateur = prenom;
                 NouvelUtilisateur.MailUtilisateur = mail;
@@ -38,7 +40,7 @@ namespace STIVE_API.Controllers
                 NouvelUtilisateur.CodePostalUtilisateur = codepostal;
                 NouvelUtilisateur.VilleUtilisateur = ville;
                 NouvelUtilisateur.TelephoneUtilisateur = telephone;
-                NouvelUtilisateur.IdFonction = Convert.ToInt32(idfonction);
+                NouvelUtilisateur.IdFonction = idfonction;
 
                 context.Add(NouvelUtilisateur);
                 context.SaveChanges();
@@ -47,7 +49,8 @@ namespace STIVE_API.Controllers
 
         //Modifier un utilisateur
         [HttpPut]
-        public void ModifierUtilisateur(int ID = 0, string? nom = null, string? prenom = null, string? mail = null, string? adresse = null, string? codepostal = null, string? mdp=null, string? ville = null, string? telephone = null, string? idfonction=null)
+        public void ModifierUtilisateur(int ID = 0, string? nom = null, string? prenom = null, string? mail = null, string? adresse = null,
+            string? codepostal = null, string? mdp=null, string? ville = null, string? telephone = null, int? idfonction=null,string? numeroutilisateur=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -61,7 +64,8 @@ namespace STIVE_API.Controllers
                 if (codepostal != null) { unUtilisateur.CodePostalUtilisateur = codepostal; }
                 if (ville != null) { unUtilisateur.VilleUtilisateur = ville; }
                 if (telephone != null) { unUtilisateur.TelephoneUtilisateur = telephone; }
-                if (idfonction != null) { unUtilisateur.IdFonction = idfonction; }
+                if (idfonction != null) { unUtilisateur.IdFonction =idfonction; }
+                if (numeroutilisateur !=null) { unUtilisateur.NumeroUtilisateur = numeroutilisateur; }
 
 
                 context.Update(unUtilisateur);
