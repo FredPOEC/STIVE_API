@@ -55,8 +55,8 @@ namespace STIVE_API.Controllers
 
         //Ajouter un article
         [HttpPost]
-        public void AjouterArticle(string nom, string annee, string stock, string prixAchatHT, string IdFamille,
-            string IdDomaine, string IdTva, string IdCoef, string? descriptif = null, string? image = null, string? numeroarticle=null)
+        public void AjouterArticle(string nom, string annee, int stock, double prixAchatHT, int IdFamille,
+            int IdDomaine, int IdTva, int IdCoef, string? descriptif = null, string? image = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -64,28 +64,31 @@ namespace STIVE_API.Controllers
 
                 NouvelArticle.NomArticle = nom;
                 NouvelArticle.AnneeArticle = annee;
-                NouvelArticle.QuantiteEnStock = Convert.ToInt32(stock);
+                NouvelArticle.QuantiteEnStock = stock;
                 NouvelArticle.DescriptifArticle = descriptif;
                 NouvelArticle.ImageArticle = image;
-                NouvelArticle.PrixAchathtArticle = Convert.ToDouble(prixAchatHT);
-                NouvelArticle.IdFamille = Convert.ToInt32(IdFamille);
-                NouvelArticle.IdCoef=Convert.ToInt32(IdCoef);   
-                NouvelArticle.IdDomaine = Convert.ToInt32(IdDomaine);
-                NouvelArticle.IdTVA = Convert.ToInt32(IdTva);
-                NouvelArticle.NumeroArticle = numeroarticle;
-
-
+                NouvelArticle.PrixAchathtArticle = prixAchatHT;
+                NouvelArticle.IdFamille = IdFamille;
+                NouvelArticle.IdCoef=IdCoef;   
+                NouvelArticle.IdDomaine = IdDomaine;
+                NouvelArticle.IdTVA = IdTva;
+                NouvelArticle.NumeroArticle = "";
 
                 context.Add(NouvelArticle);
+                context.SaveChanges();
+
+                NouvelArticle.NumeroArticle = Convert.ToString(NouvelArticle.IdDomaine)+NouvelArticle.IdFamille + NouvelArticle.IdArticle;
+
+                context.Update(NouvelArticle);
                 context.SaveChanges();
             }
         }
 
         //Modifier un article
         [HttpPut]
-        public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, string? stock = null, 
-            string? prixAchatHT = null, string? IdCoef = null, string? IdFamille = null, string? IdDomaine = null,
-            string? IdTva = null, string? descriptif = null, string? image = null, string? numeroarticle=null)
+        public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, int? stock = null, 
+            double? prixAchatHT = null, int? IdCoef = null, int? IdFamille = null, int? IdDomaine = null,
+            int? IdTva = null, string? descriptif = null, string? image = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -94,15 +97,15 @@ namespace STIVE_API.Controllers
 
                 if (nom != null) { unArticle.NomArticle = nom; }
                 if (annee != null) { unArticle.AnneeArticle = annee; }
-                if (stock != null) { unArticle.QuantiteEnStock = Convert.ToInt32(stock); }
-                if (prixAchatHT != null) { unArticle.PrixAchathtArticle = Convert.ToDouble(prixAchatHT); }
-                if (IdCoef != null) { unArticle.IdCoef = Convert.ToInt32(IdCoef); }
-                if (IdFamille != null) { unArticle.IdFamille = Convert.ToInt32(IdFamille); }
-                if (IdDomaine != null) { unArticle.IdDomaine = Convert.ToInt32(IdDomaine); }
+                if (stock != null) { unArticle.QuantiteEnStock = stock; }
+                if (prixAchatHT != null) { unArticle.PrixAchathtArticle = prixAchatHT; }
+                if (IdCoef != null) { unArticle.IdCoef = IdCoef; }
+                if (IdFamille != null) { unArticle.IdFamille = IdFamille; }
+                if (IdDomaine != null) { unArticle.IdDomaine = IdDomaine; }
                 if (descriptif != null) { unArticle.DescriptifArticle = descriptif; }
                 if (image != null) { unArticle.ImageArticle = image; }
-                if (IdTva != null) { unArticle.IdTVA = Convert.ToInt32(IdTva); }
-                if ( numeroarticle !=null) { unArticle.NumeroArticle = numeroarticle; }
+                if (IdTva != null) { unArticle.IdTVA = IdTva; }
+           
                 
                 context.Update(unArticle);
                 context.SaveChanges();
