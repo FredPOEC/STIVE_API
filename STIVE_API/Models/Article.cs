@@ -17,7 +17,7 @@ namespace STIVE_API.Models
         public string? ImageArticle { get; set; }
 
         [Required]
-        public double PrixVentehtArticle { get; set; }
+        public string? NumeroArticle { get; set; }
 
 
 

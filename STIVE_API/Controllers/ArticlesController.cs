@@ -56,7 +56,7 @@ namespace STIVE_API.Controllers
         //Ajouter un article
         [HttpPost]
         public void AjouterArticle(string nom, string annee, string stock, string prixAchatHT, string IdFamille,
-            string IdDomaine, string IdTva, string IdCoef, string? descriptif = null, string? image = null)
+            string IdDomaine, string IdTva, string IdCoef, string? descriptif = null, string? image = null, string? numeroarticle=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -72,11 +72,9 @@ namespace STIVE_API.Controllers
                 NouvelArticle.IdCoef=Convert.ToInt32(IdCoef);   
                 NouvelArticle.IdDomaine = Convert.ToInt32(IdDomaine);
                 NouvelArticle.IdTVA = Convert.ToInt32(IdTva);
+                NouvelArticle.NumeroArticle = numeroarticle;
 
-                //Calcul du prix de vente en fonction du prix d'achat et du coef de marge
-                Coef unCoef = new Coef();
-                unCoef = context.coefs.Where(x => x.IdCoef == NouvelArticle.IdCoef).First();
-                NouvelArticle.PrixVentehtArticle = Convert.ToDouble(prixAchatHT) * unCoef.ValeurCoef;
+
 
                 context.Add(NouvelArticle);
                 context.SaveChanges();
@@ -87,7 +85,7 @@ namespace STIVE_API.Controllers
         [HttpPut]
         public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, string? stock = null, 
             string? prixAchatHT = null, string? IdCoef = null, string? IdFamille = null, string? IdDomaine = null,
-            string? IdTva = null, string? descriptif = null, string? image = null)
+            string? IdTva = null, string? descriptif = null, string? image = null, string? numeroarticle=null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
@@ -104,18 +102,12 @@ namespace STIVE_API.Controllers
                 if (descriptif != null) { unArticle.DescriptifArticle = descriptif; }
                 if (image != null) { unArticle.ImageArticle = image; }
                 if (IdTva != null) { unArticle.IdTVA = Convert.ToInt32(IdTva); }
+                if ( numeroarticle !=null) { unArticle.NumeroArticle = numeroarticle; }
                 
                 context.Update(unArticle);
                 context.SaveChanges();
-                
-                //Recalcul du prix de vente en fonction du prix d'achat et du coef de marge
-                //quels que soient les changements, y compris si il n'y en a aucun
-                Coef unCoef = new Coef();
-                unCoef = context.coefs.Where(x => x.IdCoef == unArticle.IdCoef).First();
-                unArticle.PrixVentehtArticle = Convert.ToDouble(prixAchatHT) * unCoef.ValeurCoef;
+            
 
-                context.Update(unArticle);
-                context.SaveChanges();
             }
         }
 

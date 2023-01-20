@@ -8,6 +8,9 @@ namespace STIVE_API.Models
         [Key]
         public int IdUtilisateur { get; set; }
         [Required]
+        public string NumeroUtilisateur { get; set; }
+
+        [Required]
         public string NomUtilisateur { get; set; }
 
         [Required]
@@ -30,7 +33,7 @@ namespace STIVE_API.Models
         public string TelephoneUtilisateur { get; set; }
 
         [Required, ForeignKey("fonctions")]
-        public int IdFonction { get; set; }
+        public int? IdFonction { get; set; }
 
     }
 }
