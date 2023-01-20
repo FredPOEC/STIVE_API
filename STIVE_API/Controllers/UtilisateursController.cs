@@ -23,15 +23,40 @@ namespace STIVE_API.Controllers
             }
         }
 
+        //Lister les utilisateurs par nom
+        [HttpGet]
+        public List<Utilisateur> ListeUtilisateurParNom()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Utilisateur> utilisateurs = context.utilisateurs
+                    .OrderBy(x => x.NomUtilisateur)
+                    .ToList();
+                return utilisateurs;
+            }
+        }
+
+        //Lister les utilisateurs par ville
+        [HttpGet]
+        public List<Utilisateur> ListeUtilisateurParVille()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Utilisateur> utilisateurs = context.utilisateurs
+                    .OrderBy(x => x.VilleUtilisateur)
+                    .ToList();
+                return utilisateurs;
+            }
+        }
+
         //Ajouter un utilisateur
         [HttpPost]
         public void AjouterUtilisateur( string nom, string prenom, string mail, string adresse, string codepostal, string ville,
-            int idfonction, string? mdp = null, string? telephone = null, string? numeroutilisateur=null)
+            int idfonction, string? mdp = null, string? telephone = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
                 Utilisateur NouvelUtilisateur = new Utilisateur();
-                NouvelUtilisateur.NumeroUtilisateur = numeroutilisateur;
                 NouvelUtilisateur.NomUtilisateur = nom;
                 NouvelUtilisateur.PrenomUtilisateur = prenom;
                 NouvelUtilisateur.MailUtilisateur = mail;
@@ -41,8 +66,13 @@ namespace STIVE_API.Controllers
                 NouvelUtilisateur.VilleUtilisateur = ville;
                 NouvelUtilisateur.TelephoneUtilisateur = telephone;
                 NouvelUtilisateur.IdFonction = idfonction;
-
+                NouvelUtilisateur.NumeroUtilisateur = "";
                 context.Add(NouvelUtilisateur);
+                context.SaveChanges();
+
+                NouvelUtilisateur.NumeroUtilisateur = DateTime.Now.ToString("MMyy") + NouvelUtilisateur.IdUtilisateur;
+
+                context.Update(NouvelUtilisateur);
                 context.SaveChanges();
             }
         }

@@ -10,7 +10,7 @@ namespace STIVE_API.Models
         [Required]
         public string? NomArticle { get; set; }
         [Required]
-        public int QuantiteEnStock { get; set; }
+        public int? QuantiteEnStock { get; set; }
       
         public string? DescriptifArticle { get; set; }
 
@@ -23,20 +23,20 @@ namespace STIVE_API.Models
 
 
         [Required]
-        public double PrixAchathtArticle { get; set; }
+        public double? PrixAchathtArticle { get; set; }
 
         [Required]
         public string? AnneeArticle { get; set; }
 
         [Required, ForeignKey("coefs")]
-        public int IdCoef { get; set; }
+        public int? IdCoef { get; set; }
 
         [Required, ForeignKey("familles")]
-        public int IdFamille { get; set; }
+        public int? IdFamille { get; set; }
         [Required, ForeignKey("domaines")]
-        public int IdDomaine { get; set; }
+        public int? IdDomaine { get; set; }
         [Required, ForeignKey("tvas")]
-        public int IdTVA { get; set; }
+        public int? IdTVA { get; set; }
         
     }
 }
