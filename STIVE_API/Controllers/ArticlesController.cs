@@ -5,8 +5,11 @@ using STIVE_API.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+
+
 namespace STIVE_API.Controllers
 {
+
     [Route("[controller]/[action]")]
     [ApiController]
     public class ArticlesController 
@@ -15,45 +18,9 @@ namespace STIVE_API.Controllers
 
         // ACTIONS SUR LES ARTICLES
 
-
-
-        //Renvoyer la liste des articles par famille
-        [HttpGet]
-        public List<Article> ListeArticleParFamille(int IDFamille)
-        {
-            using STIVE_Context context = new STIVE_Context();
-            {
-                List<Article> Articles = context.articles.Where(x => x.IdFamille == IDFamille).ToList();
-                return Articles;
-            }
-        }
-
-        //Renvoyer la liste des articles par domaine
-        [HttpGet(Name = "Liste des articles par domaines")]
-        public List<Article> ListeArticleParDomaine(int IDDomaine)
-        {
-            using STIVE_Context context = new STIVE_Context();
-            {
-                List<Article> Articles = context.articles.Where(x => x.IdDomaine == IDDomaine).ToList();
-                return Articles;
-            }
-        }
-
-        //Renvoyer la liste des articles triés par Familles et par Domaines
-        [HttpGet]
-        public List<Article> ListeArticle()
-        {
-            using STIVE_Context context = new STIVE_Context();
-            {
-                List<Article> Articles = context.articles
-                           // .OrderBy(x => x.IdFamille)
-                           // .ThenBy(x => x.IdDomaine)
-                            .ToList();
-                return Articles;
-            }
-        }
-
         //Ajouter un article
+
+
         [HttpPost]
         public void AjouterArticle(string nom, string annee, int stock, double prixAchatHT, int IdFamille,
             int IdDomaine, int IdTva, int IdCoef, string? descriptif = null, string? image = null)
@@ -69,7 +36,7 @@ namespace STIVE_API.Controllers
                 NouvelArticle.ImageArticle = image;
                 NouvelArticle.PrixAchathtArticle = prixAchatHT;
                 NouvelArticle.IdFamille = IdFamille;
-                NouvelArticle.IdCoef=IdCoef;   
+                NouvelArticle.IdCoef = IdCoef;
                 NouvelArticle.IdDomaine = IdDomaine;
                 NouvelArticle.IdTVA = IdTva;
                 NouvelArticle.NumeroArticle = "";
@@ -77,12 +44,119 @@ namespace STIVE_API.Controllers
                 context.Add(NouvelArticle);
                 context.SaveChanges();
 
-                NouvelArticle.NumeroArticle = Convert.ToString(NouvelArticle.IdDomaine)+NouvelArticle.IdFamille + NouvelArticle.IdArticle;
+                NouvelArticle.NumeroArticle = AjouterZeros(NouvelArticle.IdDomaine, 2) + AjouterZeros(NouvelArticle.IdFamille, 2) + AjouterZeros(NouvelArticle.IdArticle, 4);
 
                 context.Update(NouvelArticle);
                 context.SaveChanges();
             }
         }
+
+
+        //Renvoyer la liste des articles 
+        [HttpGet]
+        public List<Article> ListeArticle()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            // .OrderBy(x => x.IdFamille)
+                            // .ThenBy(x => x.IdDomaine)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles triée par noms
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParNom()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.NomArticle)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles triée par domaines
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParDomaine()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.IdDomaine)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles triée par familles
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParFamille()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.IdFamille)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles triée par année
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParAnnee()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.AnneeArticle)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles triée par prix achat
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParPrixAchatHT()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.PrixAchathtArticle)
+                            .ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles par domaine
+        [HttpGet]
+        public List<Article> ListeArticleParDomaine(int IDDomaine)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles.Where(x => x.IdDomaine == IDDomaine).ToList();
+                return Articles;
+            }
+        }
+
+        //Renvoyer la liste des articles par famille
+        [HttpGet]
+        public List<Article> ListeArticleParFamille(int IDFamille)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles.Where(x => x.IdFamille == IDFamille).ToList();
+                return Articles;
+            }
+        }
+
+
+
+
+        
 
         //Modifier un article
         [HttpPut]
@@ -124,6 +198,13 @@ namespace STIVE_API.Controllers
                 context.Remove(unArticle);
                 context.SaveChanges();
             }
+        }
+        public static string AjouterZeros(int? nb, int LongueurFinale)
+        {
+            string Chaine = Convert.ToString(nb);
+            for (int i = Chaine.Length; i < LongueurFinale; i++)
+            { Chaine = "0" + Chaine; }
+            return Chaine;
         }
     }
 }
