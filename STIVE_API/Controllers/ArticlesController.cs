@@ -131,6 +131,19 @@ namespace STIVE_API.Controllers
             }
         }
 
+        //Renvoyer la liste des articles triée par quantité
+        [HttpGet]
+        public List<Article> ListeArticleTrieeParQuantite()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article> Articles = context.articles
+                            .OrderBy(x => x.QuantiteEnStock)
+                            .ToList();
+                return Articles;
+            }
+        }
+
         //Renvoyer la liste des articles par domaine
         [HttpGet]
         public List<Article> ListeArticleParDomaine(int IDDomaine)
@@ -156,7 +169,9 @@ namespace STIVE_API.Controllers
 
 
 
-        
+
+
+
 
         //Modifier un article
         [HttpPut]
