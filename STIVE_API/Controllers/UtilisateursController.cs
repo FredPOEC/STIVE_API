@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Globalization;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using STIVE_API.Helpers;
 using STIVE_API.Models;
 
@@ -61,6 +63,23 @@ namespace STIVE_API.Controllers
                 return utilisateurs;
             }
         }
+
+        [HttpGet]
+        //Rechercher un utilisateur par nom
+        public List<Utilisateur> RechercherUtilisateurParNom(string nom)
+        {
+          
+
+            using STIVE_Context context= new STIVE_Context();
+            {
+                List<Utilisateur> utilisateurs = context.utilisateurs.Where(x => x.NomUtilisateur == nom).ToList();
+                return utilisateurs;
+            }
+
+            
+        }
+
+        [HttpGet]
 
         //Ajouter un utilisateur
         [HttpPost]
@@ -148,6 +167,8 @@ namespace STIVE_API.Controllers
                 return unUtilisateur;
             }
         }
+
+
 
     }
 }

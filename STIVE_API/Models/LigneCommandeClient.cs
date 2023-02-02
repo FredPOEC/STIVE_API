@@ -8,7 +8,7 @@ namespace STIVE_API.Models
         [Key]
         public int IdLigneCommandeClient { get; set; }
         [Required]
-        public int QuantiteLigneCommandeClient { get; set; }
+        public int? QuantiteLigneCommandeClient { get; set; }
 
         [Required]
         public double PrixAchathtLigneCommandeClient { get; set; }
