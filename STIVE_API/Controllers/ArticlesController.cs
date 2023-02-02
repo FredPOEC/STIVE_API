@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using STIVE_API.Helpers;
 using STIVE_API.Models;
@@ -12,7 +14,7 @@ namespace STIVE_API.Controllers
 
     [Route("[controller]/[action]")]
     [ApiController]
-    public class ArticlesController 
+    public class ArticlesController
     {
 
 
@@ -166,22 +168,37 @@ namespace STIVE_API.Controllers
             }
         }
 
+        //Rechercher un article par son nom ou sa description    
+        [HttpGet]
+        public List<Article>? RechercheArticle(string chaine)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Article>? Liste = null;
+                List<Article>? ListeDescription = null;
+                try 
+                {
+                    Liste = context.articles.Where(x => x.NomArticle.Contains(chaine)).ToList(); 
+                    ListeDescription = context.articles.Where(x => x.DescriptifArticle.Contains(chaine)).ToList();
 
-
-
-
+                }
+                catch (Exception ex) { }
+                Liste.AddRange(ListeDescription);
+                return Liste;
+            }
+        }
 
 
 
         //Modifier un article
         [HttpPut]
-        public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, int? stock = null, 
-            double? prixAchatHT = null, int? IdCoef = null, int? IdFamille = null, int? IdDomaine = null,
-            int? IdTva = null, string? descriptif = null, string? image = null)
+        public void ModifierArticle(int ID = 0, string? nom = null, string? annee = null, int? stock = null,
+        double? prixAchatHT = null, int? IdCoef = null, int? IdFamille = null, int? IdDomaine = null,
+        int? IdTva = null, string? descriptif = null, string? image = null)
         {
             using STIVE_Context context = new STIVE_Context();
             {
-                
+
                 Article unArticle = context.articles.Where(x => x.IdArticle == ID).First();
 
                 if (nom != null) { unArticle.NomArticle = nom; }
@@ -194,11 +211,11 @@ namespace STIVE_API.Controllers
                 if (descriptif != null) { unArticle.DescriptifArticle = descriptif; }
                 if (image != null) { unArticle.ImageArticle = image; }
                 if (IdTva != null) { unArticle.IdTVA = IdTva; }
-           
-                
+
+
                 context.Update(unArticle);
                 context.SaveChanges();
-            
+
 
             }
         }
@@ -214,6 +231,7 @@ namespace STIVE_API.Controllers
                 context.SaveChanges();
             }
         }
+
         public static string AjouterZeros(int? nb, int LongueurFinale)
         {
             string Chaine = Convert.ToString(nb);
@@ -221,5 +239,7 @@ namespace STIVE_API.Controllers
             { Chaine = "0" + Chaine; }
             return Chaine;
         }
+
     }
 }
+
