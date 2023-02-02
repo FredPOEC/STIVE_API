@@ -49,18 +49,18 @@ namespace STIVE_API.Controllers
             }
         }
 
-        ////Lister les utilisateurs par ville
-        //[HttpGet]
-        //public List<Utilisateur> ListeUtilisateurParVille()
-        //{
-        //    using STIVE_Context context = new STIVE_Context();
-        //    {
-        //        List<Utilisateur> utilisateurs = context.utilisateurs
-        //            .OrderBy(x => x.VilleUtilisateur)
-        //            .ToList();
-        //        return utilisateurs;
-        //    }
-        //}
+        //Lister les utilisateurs par ville
+        [HttpGet]
+        public List<Utilisateur> ListeUtilisateurParVille()
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                List<Utilisateur> utilisateurs = context.utilisateurs
+                    .OrderBy(x => x.VilleUtilisateur)
+                    .ToList();
+                return utilisateurs;
+            }
+        }
 
         //Ajouter un utilisateur
         [HttpPost]
