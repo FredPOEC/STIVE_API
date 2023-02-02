@@ -114,5 +114,27 @@ namespace STIVE_API.Controllers
                 context.SaveChanges();
             }
         }
+
+        //Vérifier connexion
+        [HttpGet]
+        public Utilisateur? VerifierIdentifiants(string email, string mdp)
+        {
+            using STIVE_Context context = new STIVE_Context();
+            {
+                Utilisateur? unUtilisateur = null;
+                try {unUtilisateur = context.utilisateurs.Where(x => x.MailUtilisateur == email).First(); } 
+                catch (Exception e) { }
+
+                if (unUtilisateur != null)
+                { 
+                    if (unUtilisateur.MotdePasseUtilisateur != mdp)
+                    {
+                        unUtilisateur = null;
+                    }
+                }
+                return unUtilisateur;
+            }
+        }
+
     }
 }
